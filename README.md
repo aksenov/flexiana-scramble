@@ -1,7 +1,7 @@
 # flexiana-scramble
 
 Flexiana scramble challenge.
-For details look into [conditions](./doc/challenge.md).
+For details look to [conditions](./doc/challenge.md).
 
 ## Usage
 
@@ -26,7 +26,6 @@ Default value is `8888`.
 Application less than ideal, so it need to added:
 
 * ClojureScript tests
-* Handle timeout in scramble request
 * Better explanation on HTTP errors
 * Configuration + config validation
 * Proper documentation with examples
