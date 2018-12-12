@@ -11,7 +11,7 @@
             :status  200})))
   (testing "Invalid input"
     (is (= (app (mock/request :get "/api/scramble?str2=cab"))
-           {:body    "Bad input"
+           {:body    "Invalid input"
             :headers {}
             :status  400}))))
 
