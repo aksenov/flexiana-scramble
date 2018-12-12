@@ -4,7 +4,10 @@
   (:require [reagent.core :as r]
             [cljs-http.client :as http]
             [cljs.core.async :refer [<!]]
-            [flexiana-scramble.validation :refer [valid-string?]]))
+            [flexiana-scramble.validation :refer [valid-string?]]
+            [clojure.string :as string]))
+
+(def ^:dynamic *request-timeout* 10000)
 
 (defn format-result
   "Format result from"
@@ -18,7 +21,8 @@
   [error-text error-message]
   [:span {:style {:background-color "red"
                   :color            "white"}}
-   (str "Error! " error-text ": " error-message)])
+   (str "Error! " error-text " - "
+        (if-not (string/blank? error-message) error-message "Unexpected error"))])
 
 
 (defn scramble-strings!
@@ -27,9 +31,10 @@
   (reset! result "Pending for scramble result...")          ;; TODO: Show this on long requests only
   (go
     (let [{:keys [body success error-text]}
-          (<! (http/get "/api/scramble"                     ;; TODO: handle timeout
+          (<! (http/get "/api/scramble"
                         {:query-params {"str1" str1
-                                        "str2" str2}}))]
+                                        "str2" str2}
+                         :timeout      *request-timeout*}))]
       (if success
         (reset! result (format-result body))
         (reset! result (format-error error-text body))))))
